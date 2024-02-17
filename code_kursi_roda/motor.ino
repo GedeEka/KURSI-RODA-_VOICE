@@ -34,14 +34,12 @@ void right() {
   analogWrite(pwm, 255);
   Serial.println("Motor Kanan");
 }
-
 void stop() {
   for (int i = 0; i < 12; i = i + 1)
   {
     analogWrite(pwm, FPWM[i]);
     digitalWrite(motor2Pin1, LOW);
     digitalWrite(motor2Pin2, LOW);
-
     delay(500);
     Serial.println(FPWM[i]);
   }
