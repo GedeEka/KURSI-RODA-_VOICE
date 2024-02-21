@@ -11,7 +11,7 @@ int trigPin = 2;    //Trigger
 int cm_1, cm_2;
 int buzzer = 13;
 int distance;
-
+bool bacaSensor = false;   //boolean untuk baca sensor sekali setiap fungsi berjalan
 // Motor A
 int motor1Pin1 = 5;
 int motor1Pin2 = 6;
@@ -132,13 +132,12 @@ void loop() {
   // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
   //  brake();
   voice();
-  cm_1 = ultra(trigPin, echoPin_4, 4);
-  cm_2 = ultra(trigPin, echoPin_1, 1);
-  if (cm_1 or cm_2 <= 50) {
-    digitalWrite(motor1Pin1, LOW);
-    digitalWrite(motor1Pin2, LOW);
-    digitalWrite(motor2Pin1, LOW);
-    digitalWrite(motor2Pin2, LOW);
-    Serial.println("Motor break");
+   if (bacaSensor) {
+    cm_1 = ultra(trigPin, echoPin_4, 4);
+    cm_2 = ultra(trigPin, echoPin_1, 1);
+    if (cm_1 <= 50) {
+      stop();
+      bacaSensor = false;
+    }
   }
 }
