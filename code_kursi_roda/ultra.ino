@@ -1,5 +1,6 @@
 int ultra (int A, int B, int C)
-{
+
+  {
   long duration;
   int distance;
   digitalWrite(A, LOW);

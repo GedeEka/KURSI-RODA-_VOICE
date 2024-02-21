@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h>
 #include "VoiceRecognitionV3.h"
-VR myVR(11, 12);   // 2:RX 3:TX, you can choose your favourite pins.
+VR myVR(12, 11);   // 2:RX 3:TX, you can choose your favourite pins.
 
 //PIN ULTRASONIK
 int echoPin_2 = 4;    // Echo
@@ -9,15 +9,20 @@ int echoPin_4 = 8;    // Echo
 int echoPin_1 = 3;    // Echo
 int trigPin = 2;    //Trigger
 int cm_1, cm_2;
-int pwm = 13;
+int buzzer = 13;
+int distance;
+
 // Motor A
 int motor1Pin1 = 5;
 int motor1Pin2 = 6;
+int pwm1 = A1;
 // Motor B
 int motor2Pin1 = 9;
 int motor2Pin2 = 10;
+int pwm2 = A2;
 //variabel pwm
-int FPWM[] = {225, 200, 175, 150, 125, 100, 75, 50, 25, 0};
+int FPWM_STOP[] = {200, 150, 125, 100, 0};
+int FPWM1_STOP[] = {150, 125, 100, 0};
 
 uint8_t records[7]; // save record
 uint8_t buf[64];
@@ -26,6 +31,7 @@ uint8_t buf[64];
 #define belok_kiri   (2)
 #define belok_kanan    (3)
 #define stopp  (4)
+
 
 void printSignature(uint8_t *buf, int len)
 {
@@ -90,7 +96,8 @@ void setup()
   pinMode(echoPin_2, INPUT);
   pinMode(echoPin_3, INPUT);
   pinMode(echoPin_4, INPUT);
-  pinMode(pwm, OUTPUT);
+  pinMode(pwm1, OUTPUT);
+  pinMode(pwm2, OUTPUT);
   pinMode(motor1Pin1, OUTPUT);
   pinMode(motor1Pin2, OUTPUT);
   pinMode(motor2Pin1, OUTPUT);
@@ -123,14 +130,15 @@ void setup()
 void loop() {
   // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
   // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
+  //  brake();
   voice();
   cm_1 = ultra(trigPin, echoPin_4, 4);
   cm_2 = ultra(trigPin, echoPin_1, 1);
-  if (cm_1 or cm_2 < 50)
-  {
-    //    digitalWrite(buzzer, HIGH);
-
+  if (cm_1 or cm_2 <= 50) {
+    digitalWrite(motor1Pin1, LOW);
+    digitalWrite(motor1Pin2, LOW);
+    digitalWrite(motor2Pin1, LOW);
+    digitalWrite(motor2Pin2, LOW);
+    Serial.println("Motor break");
   }
-
-
 }

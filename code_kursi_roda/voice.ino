@@ -20,6 +20,7 @@ void voice()
         break;
       case stopp:
         stop();
+        break;
 
 
     }
