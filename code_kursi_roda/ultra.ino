@@ -10,11 +10,11 @@ int ultra (int A, int B, int C)
   digitalWrite(A, LOW);
   duration = pulseIn(B, HIGH);       // Mengukur durasi echo
   distance = (duration * 0.0343) / 2;  // Menghitung jarak berdasarkan durasi
-//  Serial.print("Distance sensor : ");
-//  Serial.print(C);
-//  Serial.print(" : ");
-//  Serial.println(distance);
-  delay(500);
+  Serial.print("Distance sensor : ");
+  Serial.print(C);
+  Serial.print(" : ");
+  Serial.println(distance);
+  delay(200);
   return distance;
 
 }

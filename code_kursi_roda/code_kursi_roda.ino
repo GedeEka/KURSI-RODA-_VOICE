@@ -21,9 +21,9 @@ int motor2Pin1 = 9;
 int motor2Pin2 = 10;
 int pwm2 = A2;
 //variabel pwm
-int FPWM_STOP[] = {200, 150, 125, 100, 0};
+int FPWM_STOP[] = {150, 125, 100, 0};
 int FPWM1_STOP[] = {150, 125, 100, 0};
-
+int FPWM_LEFT[] = {0, 100, 125, 150, 175};
 uint8_t records[7]; // save record
 uint8_t buf[64];
 #define maju    (0)
@@ -132,12 +132,14 @@ void loop() {
   // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
   //  brake();
   voice();
-   if (bacaSensor) {
-    cm_1 = ultra(trigPin, echoPin_4, 4);
-    cm_2 = ultra(trigPin, echoPin_1, 1);
-    if (cm_1 <= 50) {
+  cm_1 = ultra(trigPin, echoPin_4, 4);
+//  cm_2 = ultra(trigPin, echoPin_1, 1);
+  if (bacaSensor) {
+
+    if (cm_1 <= 100) {
       stop();
       bacaSensor = false;
+
     }
   }
 }
