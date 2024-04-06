@@ -108,6 +108,9 @@ void printVR(uint8_t *buf)
 
 void setup()
 {
+  lcd.setCursor(0, 0);
+  lcd.print(" KURSI RODA ELEKTRIK ");
+  
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin_1, INPUT);
   pinMode(echoPin_2, INPUT);
@@ -126,7 +129,7 @@ void setup()
   myVR.begin(9600);
 
   Serial.begin(115200);
-  Serial.println("Elechouse Voice Recognition V3 Module\r\nControl wheel chair");
+  Serial.println("Control wheel chair");
 
   if (myVR.clear() == 0) {
     Serial.println("Recognizer cleared.");
