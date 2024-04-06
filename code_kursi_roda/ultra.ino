@@ -14,7 +14,6 @@ int ultra (int A, int B, int C)
   Serial.print(C);
   Serial.print(" : ");
   Serial.println(distance);
-  delay(200);
   return distance;
 
 }

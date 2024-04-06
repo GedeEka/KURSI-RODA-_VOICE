@@ -6,11 +6,11 @@ void voice()
   if (ret > 0) {
     switch (buf[1]) {
       case maju:
-        bacaSensor = true;
+        Sensor_Depan = true;
         forward();
         break;
       case mundur:
-        bacaSensor = true;
+        Sensor_Belakang = true;
         backward();
         break;
       case belok_kiri:
@@ -23,7 +23,7 @@ void voice()
         break;
       case stopp:
         stop();
-        bacaSensor = true;
+//        Sensor_depan = true;
         break;
 
 

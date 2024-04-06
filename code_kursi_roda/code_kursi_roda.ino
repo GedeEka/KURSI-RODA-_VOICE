@@ -8,7 +8,6 @@ VR myVR(12, 11);   // 2:RX 3:TX, you can choose your favourite pins.
 #define LCD_ADDRESS 0x27
 #define LCD_COLUMNS 16
 #define LCD_ROWS 2
-//objek LiquidCrystal_I2C
 LiquidCrystal_I2C lcd(LCD_ADDRESS, LCD_COLUMNS, LCD_ROWS);
 
 // voltage Devender
@@ -20,15 +19,16 @@ float R2 = 10000.0;
 int value = 0;
 
 //PIN ULTRASONIK
-int echoPin_2 = 4;    // Echo
-int echoPin_3 = 7;    // Echo
-int echoPin_4 = 8;    // Echo
-int echoPin_1 = 3;    // Echo
+int echoPin_2 = 4;    // KANAN BELAKANG
+int echoPin_3 = 7;    // KIRI BELAKANG
+int echoPin_4 = 8;    // KIRI DEPAN
+int echoPin_1 = 3;    // KANAN DEPAN
 int trigPin = 2;    //Trigger
-int cm_1, cm_2;
+int cm_1, cm_2, cm_3, cm_4;
 int buzzer = 13;
 int distance;
-bool bacaSensor = false;   //boolean untuk baca sensor sekali setiap fungsi berjalan
+bool Sensor_Depan = false;   //boolean untuk baca sensor sekali setiap fungsi berjalan
+bool Sensor_Belakang = false;  
 // Motor A
 int motor1Pin1 = 5;
 int motor1Pin2 = 6;
@@ -106,11 +106,7 @@ void printVR(uint8_t *buf)
   //  Serial.println("\r\n");
 }
 
-void setup()
-{
-  lcd.setCursor(0, 0);
-  lcd.print(" KURSI RODA ELEKTRIK ");
-  
+void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin_1, INPUT);
   pinMode(echoPin_2, INPUT);
@@ -126,10 +122,12 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
   /** initialize */
   lcd.init();
+  lcd.backlight();
   myVR.begin(9600);
-
   Serial.begin(115200);
   Serial.println("Control wheel chair");
+  lcd.setCursor(0, 0);
+  lcd.print("  WHEEL CHAIR");
 
   if (myVR.clear() == 0) {
     Serial.println("Recognizer cleared.");
@@ -152,23 +150,27 @@ void setup()
 
 void loop() {
   voice();
-  cm_1 = ultra(trigPin, echoPin_4, 4);
-  //  cm_2 = ultra(trigPin, echoPin_1, 1);
-  if (bacaSensor) {
+  cm_1 = ultra(trigPin, echoPin_1, 1);
+//  cm_2 = ultra(trigPin, echoPin_2, 2);
+  cm_3 = ultra(trigPin, echoPin_3, 3);
+//  cm_4 = ultra(trigPin, echoPin_4, 4);
+  if (Sensor_Depan) {
 
-    if (cm_1 <= 100) {
+    if (cm_1  <= 100) {
       stop();
-      bacaSensor = false;
-
+      Sensor_Depan = false;
+    }
+  }
+  if (Sensor_Belakang){
+    if ( cm_3 <= 100) {
+      stop();
+      Sensor_Belakang = false;
+    
     }
   }
   value = analogRead(input);
   vout = (value * 5.0) / 1024.0;
   vin = vout / (R2 / (R1 + R2));
-  Serial.print("vin = ");
-  Serial.println(vin);
-  Serial.print("value = ");
-  Serial.println(value);
   delay(500);
   if (vin < 7.5) {
     digitalWrite(LED_BUILTIN, HIGH);

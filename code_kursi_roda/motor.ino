@@ -7,6 +7,8 @@ void forward() {
   digitalWrite(motor2Pin2, LOW);
   analogWrite(pwm2, 255);
   Serial.println("Motor maju");
+  lcd.setCursor(0, 1);
+  lcd.print(" Motor maju ");
 }
 
 void backward() {
@@ -17,6 +19,8 @@ void backward() {
   digitalWrite(motor2Pin2, HIGH);
   analogWrite(pwm2, 255);
   Serial.println("Motor mundur");
+  lcd.setCursor(0, 0);
+  lcd.print(" Motor mundur ");
 }
 
 void left() {
@@ -30,13 +34,15 @@ void left() {
     analogWrite(pwm2, FPWM_LEFT[l]);
     delay(500);
     Serial.println(FPWM_LEFT[l]);
-  }
+    }
   delay(1000);
   digitalWrite(motor1Pin1, LOW);
   digitalWrite(motor1Pin2, LOW);
   digitalWrite(motor2Pin1, LOW);
   digitalWrite(motor2Pin2, LOW);
   Serial.println("Motor kiri");
+  lcd.setCursor(0, 1);
+  lcd.print(" Motor kiri ");
 }
 
 void right() {
@@ -57,6 +63,8 @@ void right() {
   digitalWrite(motor2Pin1, LOW);
   digitalWrite(motor2Pin2, LOW);
   Serial.println("Motor Kanan");
+  lcd.setCursor(0, 1);
+  lcd.print(" Motor Kanan ");
 }
 
 void stop() {
@@ -64,7 +72,7 @@ void stop() {
   {
     analogWrite(pwm1, FPWM_STOP[i]);
     analogWrite(pwm2, FPWM_STOP[i]);
-    delay(500);
+    delay(350);
     Serial.println(FPWM_STOP[i]);
   }
   digitalWrite(motor1Pin1, LOW);
@@ -72,6 +80,8 @@ void stop() {
   digitalWrite(motor2Pin1, LOW);
   digitalWrite(motor2Pin2, LOW);
   Serial.println("Motor STOP");
+  lcd.setCursor(0, 1);
+  lcd.print(" Motor STOP ");
 }
 //void rem() {
 //
