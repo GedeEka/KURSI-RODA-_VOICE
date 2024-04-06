@@ -1,6 +1,23 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 #include <SoftwareSerial.h>
 #include "VoiceRecognitionV3.h"
 VR myVR(12, 11);   // 2:RX 3:TX, you can choose your favourite pins.
+
+// Inisialisasi alamat LCD dan ukuran
+#define LCD_ADDRESS 0x27
+#define LCD_COLUMNS 16
+#define LCD_ROWS 2
+//objek LiquidCrystal_I2C
+LiquidCrystal_I2C lcd(LCD_ADDRESS, LCD_COLUMNS, LCD_ROWS);
+
+// voltage Devender
+int input = A0;
+float vout = 0.0;
+float vin = 0.0;
+float R1 = 100000.0;
+float R2 = 10000.0;
+int value = 0;
 
 //PIN ULTRASONIK
 int echoPin_2 = 4;    // Echo
@@ -102,7 +119,10 @@ void setup()
   pinMode(motor1Pin2, OUTPUT);
   pinMode(motor2Pin1, OUTPUT);
   pinMode(motor2Pin2, OUTPUT);
+  pinMode(input, INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
   /** initialize */
+  lcd.init();
   myVR.begin(9600);
 
   Serial.begin(115200);
@@ -128,12 +148,9 @@ void setup()
 }
 
 void loop() {
-  // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
-  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
-  //  brake();
   voice();
   cm_1 = ultra(trigPin, echoPin_4, 4);
-//  cm_2 = ultra(trigPin, echoPin_1, 1);
+  //  cm_2 = ultra(trigPin, echoPin_1, 1);
   if (bacaSensor) {
 
     if (cm_1 <= 100) {
@@ -141,5 +158,19 @@ void loop() {
       bacaSensor = false;
 
     }
+  }
+  value = analogRead(input);
+  vout = (value * 5.0) / 1024.0;
+  vin = vout / (R2 / (R1 + R2));
+  Serial.print("vin = ");
+  Serial.println(vin);
+  Serial.print("value = ");
+  Serial.println(value);
+  delay(500);
+  if (vin < 7.5) {
+    digitalWrite(LED_BUILTIN, HIGH);
+  }
+  else {
+    digitalWrite(LED_BUILTIN, LOW);
   }
 }
