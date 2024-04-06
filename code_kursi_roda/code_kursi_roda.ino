@@ -172,7 +172,7 @@ void loop() {
   vout = (value * 5.0) / 1024.0;
   vin = vout / (R2 / (R1 + R2));
   delay(500);
-  if (vin < 7.5) {
+  if (vin < 10.4) {
     digitalWrite(LED_BUILTIN, HIGH);
   }
   else {
